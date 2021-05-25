@@ -9,7 +9,11 @@
 #' @param x A expression count matrix. The rows correspond to genes and
 #'            the columns correspond to cells.
 #' @param network A adjacency matrix contation gene-gene interaction network.
-#' @param gamma A number between 0 and 1 (default: 0.5).
+#' @param gamma A number between 0 and 1 (default: 0.5).gamma is the trade-off
+#'            between prior information and network diffusion, governing the
+#'            distance that a signal is allowed to diffuse through the network
+#'            during smoothing.The specific value of gamma has little effect on
+#'            the results of network propagation over a sizable range.
 #' @param pathway pathway data
 #' @param select A threshold value, the absolute value of the score is less than
 #'             the value is regarded as an invalid value and will not participate
@@ -17,10 +21,8 @@
 #' @export
 #' @return The score of each path in the pathway data set
 
-data("string")
-data("LUCS")
-data("KEGG")
-GetScore<-function(x=LUCS.data,network=string, gamma=0.5,select=0.005,pathway=KEGG){
+
+GetScore<-function(x,network, gamma=0.5,select=0.005,pathway){
   ep.data <- matrix(rep(0,nrow(network)*dim(x)[2]),
                     nrow=nrow(network))
   rownames(ep.data) <- rownames(network)
